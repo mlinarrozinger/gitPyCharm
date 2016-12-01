@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block vsebina_strani %}
+
+<body>
+    <h1>Hello, {{ name }}!</h1>
+    <h2>Vpisal si</h2>
+    <p>{{besedilo}}</p>
+
+    <h2>Izžrebane so bile številke</h2>
+    <ul>
+        {% for num in izzrebane %}
+        <li>{{ num }}</li>
+        {% endfor %}
+    </ul>
+{% endblock vsebina_strani %}

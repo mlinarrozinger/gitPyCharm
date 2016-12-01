@@ -1,13 +1,19 @@
-
 {% extends "base.html" %}
-{% block title %}
 
-Pozdravljeni
-
-{%endblock title%}
 {% block vsebina_strani %}
+
     <h1>Hello, SmartNinja!</h1>
+    <form method="POST" action="/rezultat">
+        <label for="vpis-sporocila">Vpišite Vaše sporočilo</label>
+        <input name="sporocilo" id="vpis-sporocila">
+        <br>
+        <label for="input-ime" >Vpiši svoje ime</label>
+        <input name="ime" id="input-ime">
+        <br>
+        <label for="vpis-stevilke">Vpisi stevilo</label>
+        <input type="number" id="vpis-stevilke" name="stevilka">
 
 
+        <button type="submit">Oddaj sporocilo</button>
+    </form>
 {% endblock vsebina_strani %}
-
