@@ -73,7 +73,7 @@ class HelloHandler(BaseHandler):
 class SporocilaHandler(BaseHandler):
     def get(self):
 
-        sporocila = Sporocilo.query().fetch()
+        sporocila = Sporocilo.query(Sporocilo.je_izbrisano == False).fetch()
 
         params = {"sporocila": sporocila}
 
@@ -84,7 +84,7 @@ class PosameznoSporociloHandler(BaseHandler):
 
         sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
 
-        params= {"sporocilo": sporocilo}
+        params = {"sporocilo": sporocilo}
 
         return self.render_template("posamezno_sporocilo.html", params=params)
 
@@ -109,7 +109,52 @@ class EditHandler(BaseHandler):
 
         return self.redirect_to("seznam_sporocil")
 
+class DeleteHandler(BaseHandler):
+    def get(self, sporocilo_id):
 
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+
+        params = {"sporocilo": sporocilo}
+
+        return self.render_template("izbrisi.html", params=params)
+
+    def post(self, sporocilo_id):
+
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+
+        sporocilo.je_izbrisano = True
+
+        sporocilo.put()
+
+        return self.redirect_to("seznam_sporocil")
+
+class RestoreHandler(BaseHandler):
+    def get(self, sporocilo_id):
+
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+
+        params = {"sporocilo": sporocilo}
+
+        return self.render_template("obnovi.html", params=params)
+
+    def post(self, sporocilo_id):
+
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+
+        sporocilo.je_izbrisano = False
+
+        sporocilo.put()
+
+        return self.redirect_to("seznam_sporocil")
+
+class TrashHandler(BaseHandler):
+    def get(self):
+
+        sporocila = Sporocilo.query(Sporocilo.je_izbrisano == True).fetch()
+
+        params = {"sporocila": sporocila}
+
+        return self.render_template("trash.html", params=params)
 
 
 
@@ -126,6 +171,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/rezultat', RezultatHandler),
     webapp2.Route('/sporocila', SporocilaHandler, name="seznam_sporocil"),
     webapp2.Route("/sporocila/<sporocilo_id:\d+>", PosameznoSporociloHandler),
-    webapp2.Route("/sporocila/<sporocilo_id:\d+>/uredi", EditHandler)
-
+    webapp2.Route("/sporocila/<sporocilo_id:\d+>/uredi", EditHandler),
+    webapp2.Route("/sporocila/<sporocilo_id:\d+>/delete", DeleteHandler),
+    webapp2.Route("/sporocila/<sporocilo_id:\d+>/restore", RestoreHandler),
+    webapp2.Route("/trash", TrashHandler)
 ], debug=True)

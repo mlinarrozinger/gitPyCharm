@@ -7,6 +7,8 @@
 <body>
     {{ sporocilo.besedilo_sporocila }}; {{ sporocilo.poslano }}
     <a href="/sporocila/{{sporocilo.key.id()}}/uredi"><button>Uredi</button></a>
+    <a href="/sporocila/{{sporocilo.key.id()}}/delete"><button>izbriši</button></a>
+    <a href="/sporocila/{{sporocilo.key.id()}}/restore"><button>obnovi</button></a>
 
 
 </body>
